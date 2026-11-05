@@ -1,0 +1,35 @@
+name: Release
+
+# Push a tag like v1.0.0 to publish a ready-to-upload ZIP (dependencies included)
+# for shared hosting where Composer is not available.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, zip
+          coverage: none
+      - run: composer install --no-dev --no-interaction --no-progress --optimize-autoloader
+      - name: Build ZIP
+        run: |
+          NAME="csv2excel-${GITHUB_REF_NAME}"
+          mkdir -p "build/${NAME}"
+          cp -r .htaccess index.php config.php public src templates vendor bin examples LICENSE README.md "build/${NAME}/"
+          (cd build && zip -qr "${NAME}.zip" "${NAME}")
+          echo "ZIP=build/${NAME}.zip" >> "$GITHUB_ENV"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.ZIP }}
+            docs/demo.mp4
+          generate_release_notes: true

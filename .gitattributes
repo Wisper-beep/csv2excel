@@ -1,0 +1,15 @@
+* text=auto eol=lf
+*.png binary
+# Test fixtures keep their exact bytes (encodings, BOMs, CRLF line endings).
+examples/** binary
+examples/**/*.md text eol=lf
+*.mp4 binary
+*.gif binary
+
+/.github export-ignore
+/tests export-ignore
+/docs export-ignore
+/scripts export-ignore
+/phpunit.xml.dist export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore

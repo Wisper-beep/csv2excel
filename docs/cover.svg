@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" font-family="'Segoe UI', 'Inter', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#D5DDD9"/>
+    </pattern>
+    <linearGradient id="arrow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#3FAF7A"/>
+      <stop offset="1" stop-color="#16794C"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#0E3B26" flood-opacity=".16"/>
+    </filter>
+    <marker id="head" viewBox="0 0 10 10" refX="3" refY="5" markerWidth="64" markerHeight="64" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0.6 L9.4 5 L0 9.4 Z" fill="#16794C" stroke="#16794C" stroke-width="1.2" stroke-linejoin="round"/>
+    </marker>
+    <clipPath id="sheetClip"><rect x="0" y="0" width="330" height="400" rx="22"/></clipPath>
+  </defs>
+
+  <rect width="1280" height="640" fill="#F5F8F6"/>
+  <rect width="1280" height="640" fill="url(#dots)"/>
+
+  <!-- ============ LEFT: .csv file ============ -->
+  <g transform="translate(150 92)" filter="url(#shadow)">
+    <path d="M22 0 H262 L330 68 V378 A22 22 0 0 1 308 400 H22 A22 22 0 0 1 0 378 V22 A22 22 0 0 1 22 0 Z" fill="#FFFFFF" stroke="#16794C" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M262 0 V46 A22 22 0 0 0 284 68 H330" fill="#E3F1EA" stroke="#16794C" stroke-width="6" stroke-linejoin="round"/>
+    <g font-family="Consolas, 'Cascadia Mono', 'SFMono-Regular', monospace" font-size="19" fill="#5A6470">
+      <text x="30" y="112"><tspan fill="#1B1F24" font-weight="700">id</tspan><tspan fill="#16794C" font-weight="700">,</tspan><tspan fill="#1B1F24" font-weight="700">name</tspan><tspan fill="#16794C" font-weight="700">,</tspan><tspan fill="#1B1F24" font-weight="700">phone</tspan></text>
+      <text x="30" y="156">00123<tspan fill="#16794C" font-weight="700">,</tspan>Zoë<tspan fill="#16794C" font-weight="700">,</tspan>+91 98765…</text>
+      <text x="30" y="200">00124<tspan fill="#16794C" font-weight="700">,</tspan>张伟<tspan fill="#16794C" font-weight="700">,</tspan>+44 7700…</text>
+      <text x="30" y="244">00125<tspan fill="#16794C" font-weight="700">,</tspan>José<tspan fill="#16794C" font-weight="700">,</tspan>+39 312 3…</text>
+      <text x="30" y="288">00126<tspan fill="#16794C" font-weight="700">,</tspan>Ana<tspan fill="#16794C" font-weight="700">,</tspan>+33 6123…</text>
+    </g>
+    <rect x="30" y="318" width="190" height="10" rx="5" fill="#E7ECEA"/>
+    <rect x="30" y="344" width="130" height="10" rx="5" fill="#E7ECEA"/>
+  </g>
+  <text x="315" y="572" text-anchor="middle" font-size="64" font-weight="800" fill="#1B1F24" letter-spacing="-1">.csv</text>
+
+  <!-- ============ ARROW ============ -->
+  <g>
+    <path d="M522 268 C 560 150, 690 128, 738 222" fill="none" stroke="url(#arrow)" stroke-width="26" stroke-linecap="round" marker-end="url(#head)"/>
+    <text x="640" y="320" text-anchor="middle" font-size="26" font-weight="700" fill="#16794C">CSV2Excel</text>
+    <text x="640" y="352" text-anchor="middle" font-size="18" fill="#5E6773">one click</text>
+  </g>
+
+  <!-- ============ RIGHT: .xlsx file ============ -->
+  <g transform="translate(800 92)" filter="url(#shadow)">
+    <g clip-path="url(#sheetClip)">
+      <rect width="330" height="400" fill="#FFFFFF"/>
+      <!-- title bar -->
+      <rect width="330" height="62" fill="#16794C"/>
+      <rect x="22" y="15" width="32" height="32" rx="6" fill="#FFFFFF"/>
+      <path d="M30 23 L46 39 M46 23 L30 39" stroke="#16794C" stroke-width="4" stroke-linecap="round"/>
+      <rect x="68" y="25" width="110" height="12" rx="6" fill="#FFFFFF" opacity=".55"/>
+      <!-- header row -->
+      <rect y="62" width="330" height="52" fill="#E3F1EA"/>
+      <g font-size="18">
+        <g font-weight="700" fill="#0E4D31">
+          <text x="18" y="95">id</text>
+          <text x="104" y="95">name</text>
+          <text x="186" y="95">phone</text>
+        </g>
+        <g fill="#1B1F24">
+          <text x="18" y="148">00123</text><text x="104" y="148">Zoë</text><text x="186" y="148">+91 98765…</text>
+          <text x="18" y="200">00124</text><text x="104" y="200">张伟</text><text x="186" y="200">+44 7700…</text>
+          <text x="18" y="252">00125</text><text x="104" y="252">José</text><text x="186" y="252">+39 312 3…</text>
+          <text x="18" y="304">00126</text><text x="104" y="304">Ana</text><text x="186" y="304">+33 6123…</text>
+        </g>
+      </g>
+      <!-- grid -->
+      <g stroke="#CFDDD5" stroke-width="2">
+        <path d="M0 114 H330 M0 166 H330 M0 218 H330 M0 270 H330 M0 322 H330 M0 374 H330"/>
+        <path d="M92 62 V400 M174 62 V400"/>
+      </g>
+    </g>
+    <rect width="330" height="400" rx="22" fill="none" stroke="#16794C" stroke-width="6"/>
+  </g>
+  <text x="965" y="572" text-anchor="middle" font-size="64" font-weight="800" fill="#1B1F24" letter-spacing="-1">.xlsx</text>
+
+  <!-- ============ TAGLINE ============ -->
+  <text x="640" y="616" text-anchor="middle" font-size="20" fill="#5E6773">Leading zeros · long IDs · phone numbers · any encoding — kept exactly</text>
+</svg>

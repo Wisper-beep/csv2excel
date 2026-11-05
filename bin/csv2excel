@@ -1,0 +1,98 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Csv2Excel\ConversionOptions;
+use Csv2Excel\Converter;
+use Csv2Excel\CsvInput;
+
+foreach ([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../../autoload.php'] as $autoload) {
+    if (is_file($autoload)) {
+        require $autoload;
+        break;
+    }
+}
+
+$usage = <<<'TXT'
+Usage: csv2excel [options] <file.csv> [more.csv ...]
+
+Converts CSV files to Excel. Several inputs become one workbook with a sheet per file.
+
+Options:
+  -o, --output=FILE      Output file (default: <first input>.xlsx)
+  -f, --format=FMT       xlsx (default) or ods
+  -e, --encoding=ENC     Input encoding, e.g. UTF-8, Windows-1252, GB18030 (default: auto)
+  -d, --delimiter=CHAR   , ; tab or | (default: auto)
+      --no-header        First row is data, not a header
+      --text             Keep every value as text (no number conversion)
+      --no-width         Do not fit column widths
+      --no-filter        Do not add filter buttons
+  -h, --help             Show this help
+
+TXT;
+
+$args = array_slice($argv, 1);
+$inputs = [];
+$flags = [];
+$aliases = ['o' => 'output', 'f' => 'format', 'e' => 'encoding', 'd' => 'delimiter', 'h' => 'help'];
+
+for ($i = 0; $i < count($args); ++$i) {
+    $arg = $args[$i];
+    if (preg_match('/^--([a-z-]+)(?:=(.*))?$/s', $arg, $m) || preg_match('/^-([a-z])(.*)$/s', $arg, $m)) {
+        $key = $aliases[$m[1]] ?? $m[1];
+        $value = $m[2] ?? '';
+        if ('' === $value && in_array($key, ['output', 'format', 'encoding', 'delimiter'], true)) {
+            $value = $args[++$i] ?? '';
+        }
+        $flags[$key] = $value;
+    } else {
+        $inputs[] = $arg;
+    }
+}
+
+if (isset($flags['help']) || [] === $inputs) {
+    fwrite(isset($flags['help']) ? STDOUT : STDERR, $usage);
+    exit(isset($flags['help']) ? 0 : 1);
+}
+
+try {
+    $options = ConversionOptions::fromArray(array_filter([
+        'format' => $flags['format'] ?? null,
+        'encoding' => $flags['encoding'] ?? null,
+        'delimiter' => $flags['delimiter'] ?? null,
+        'header' => isset($flags['no-header']) ? '0' : null,
+        'smart_numbers' => isset($flags['text']) ? '0' : null,
+        'auto_width' => isset($flags['no-width']) ? '0' : null,
+        'auto_filter' => isset($flags['no-filter']) ? '0' : null,
+    ], static fn ($v) => null !== $v));
+
+    foreach ($inputs as $input) {
+        if (!is_file($input)) {
+            throw new InvalidArgumentException("File not found: {$input}");
+        }
+    }
+
+    $output = $flags['output'] ?? preg_replace('/\.[^.\/\\\\]*$/', '', $inputs[0]).'.'.$options->format;
+    $report = (new Converter($options))->convert(array_map(CsvInput::fromPath(...), $inputs), $output);
+
+    foreach ($report->sheets as $sheet) {
+        printf(
+            "%s -> sheet %s: %s rows x %d columns (%s%s, delimiter %s)\n",
+            $sheet->sourceName,
+            implode(', ', $sheet->sheetNames),
+            number_format($sheet->rows),
+            $sheet->columns,
+            $sheet->encoding,
+            $sheet->encodingGuessed ? ' guessed' : '',
+            "\t" === $sheet->delimiter ? 'tab' : $sheet->delimiter,
+        );
+    }
+    if ($report->truncatedCells > 0) {
+        printf("Warning: %d cell(s) exceeded 32,767 characters and were truncated.\n", $report->truncatedCells);
+    }
+    printf("Saved %s in %.2fs\n", $output, $report->durationMs / 1000);
+} catch (Throwable $e) {
+    fwrite(STDERR, 'Error: '.$e->getMessage().PHP_EOL);
+    exit(1);
+}

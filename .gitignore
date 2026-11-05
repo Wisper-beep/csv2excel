@@ -1,0 +1,11 @@
+/vendor/
+/build/
+/config.local.php
+/.phpunit.cache/
+/.phpunit.result.cache
+*.xlsx
+*.ods
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

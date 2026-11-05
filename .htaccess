@@ -1,0 +1,16 @@
+# Lets the app run on shared hosting (cPanel, Plesk...) when you cannot point
+# the domain's document root to public/. Recommended: point it to public/ instead.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never expose source, dependencies, config or dotfiles.
+    RewriteRule (^|/)\. - [F,L]
+    RewriteRule ^(src|vendor|templates|tests|bin|examples|docs|scripts)(/|$) - [F,L]
+    RewriteRule ^(config(\.local)?\.php|composer\.(json|lock)|phpunit\.xml(\.dist)?|Dockerfile)$ - [F,L]
+
+    # Everything else is served from public/.
+    RewriteCond %{REQUEST_URI} !/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>

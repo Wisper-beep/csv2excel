@@ -1,0 +1,39 @@
+{
+    "name": "csv2excel/csv2excel",
+    "description": "Self-hosted CSV to Excel (XLSX/ODS) converter. Streams large files, auto-detects encoding and delimiter, keeps leading zeros and long IDs intact. Web UI + CLI, white-label ready.",
+    "type": "project",
+    "license": "MIT",
+    "homepage": "https://github.com/Wisper-beep/csv2excel",
+    "keywords": ["csv", "excel", "xlsx", "ods", "converter", "spreadsheet", "self-hosted"],
+    "require": {
+        "php": ">=8.3",
+        "ext-mbstring": "*",
+        "ext-zip": "*",
+        "openspout/openspout": "^5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^12.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Csv2Excel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Csv2Excel\\Tests\\": "tests/"
+        }
+    },
+    "bin": ["bin/csv2excel"],
+    "scripts": {
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php -S localhost:8000 -t public"
+        ],
+        "test": "phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}
