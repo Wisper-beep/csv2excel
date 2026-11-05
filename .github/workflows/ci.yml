@@ -20,7 +20,7 @@ jobs:
           - os: windows-latest
             php: '8.3'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
@@ -36,7 +36,7 @@ jobs:
         run: php bin/csv2excel examples/*.csv examples/problem-files/0* -o problem-files-converted.xlsx
       - name: Upload converted workbook
         if: matrix.os == 'ubuntu-latest' && matrix.php == '8.3'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: problem-files-converted
           path: problem-files-converted.xlsx
